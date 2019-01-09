@@ -67,7 +67,7 @@ public class UserService {
 		return passwordEncoder.encode(password);
 	}
 	
-	public ActivatedUser getUserFromSession() {
+	public User getUserFromSession() {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		String username = null;
 		
@@ -78,6 +78,6 @@ public class UserService {
 			username = ((UserDetails) auth.getPrincipal()).getUsername();
 		}
         
-        return activatedUserRepository.findByUsername(username);
+        return userRepository.findByUsername(username);
 	}
 }

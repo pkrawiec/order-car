@@ -21,3 +21,5 @@
 /nbdist/
 /.nb-gradle/
 /bin/
+/build
+.gradle
