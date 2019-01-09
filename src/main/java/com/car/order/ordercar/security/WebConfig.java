@@ -1,6 +1,5 @@
 package com.car.order.ordercar.security;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,19 +13,23 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import com.car.order.ordercar.service.UserAuthService;
 
 @Configuration
-public class WebConfig extends WebSecurityConfigurerAdapter{
+public class WebConfig extends WebSecurityConfigurerAdapter {
+	
 	@Autowired
 	private UserAuthService userAuthService;
 	
+	private static final String[] PUBLIC_PATHS = {
+		"/",
+		"/register",
+		"**/static",
+		"/webjars/**"
+	};
+
+    @Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http
 			.authorizeRequests()
-				.antMatchers(
-					"/",
-					"/rejestracja",
-					"/aktualnosci/**",
-					"**/static").permitAll()
-				.antMatchers("/webjars/**").permitAll()
+				.antMatchers(PUBLIC_PATHS).permitAll()
 				.anyRequest().authenticated()
 			.and()
 				.formLogin()
@@ -35,7 +38,7 @@ public class WebConfig extends WebSecurityConfigurerAdapter{
 				.logout()
 					.invalidateHttpSession(true)
 					.clearAuthentication(true)
-					.logoutRequestMatcher(new AntPathRequestMatcher("/wyloguj"))
+					.logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
 	                .logoutSuccessUrl("/?wylogowano")
 				.permitAll();
 	}
@@ -46,7 +49,7 @@ public class WebConfig extends WebSecurityConfigurerAdapter{
     }
 
     @Bean
-    public DaoAuthenticationProvider authenticationProvider(){
+    public DaoAuthenticationProvider authenticationProvider(UserAuthService userAuthService){
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
         authProvider.setUserDetailsService(userAuthService);
         authProvider.setPasswordEncoder(passwordEncoder());
@@ -55,6 +58,6 @@ public class WebConfig extends WebSecurityConfigurerAdapter{
 
     @Override
     protected void configure(AuthenticationManagerBuilder authBuilder) throws Exception {
-    	authBuilder.authenticationProvider(authenticationProvider());
+    	authBuilder.authenticationProvider(authenticationProvider(userAuthService));
     }
 }
