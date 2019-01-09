@@ -67,17 +67,17 @@ public class UserService {
 		return passwordEncoder.encode(password);
 	}
 	
-	public User getUserFromSession() {
+	public ActivatedUser getUserFromSession() {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		String username = null;
 		
-		if (auth.getPrincipal().getClass() == String.class) {
+		if (auth.getPrincipal().getClass().equals(String.class)) {
 			username = (String) auth.getPrincipal();
 		}
-		if (auth.getPrincipal().getClass() == UserDetails.class) {
+		if (auth.getPrincipal().getClass().equals(org.springframework.security.core.userdetails.User.class)) {
 			username = ((UserDetails) auth.getPrincipal()).getUsername();
 		}
         
-        return userRepository.findByUsername(username);
+        return activatedUserRepository.findByUsername(username);
 	}
 }
