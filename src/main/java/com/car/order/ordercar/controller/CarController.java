@@ -29,34 +29,35 @@ public class CarController {
 	@Autowired
 	private CarService carService;
 	
-	private static final String CAR_EDITOR_TEMPLATE = "car-editor";
+	private static final String CAR_EDITOR_TEMPLATE = "cars/car-editor";
+	private static final String CARS_TEMPLATE = "cars/cars";
 	
 	@GetMapping()
-	public String getUserCars(Model model) {
+	public String getUserCarsPage(Model model) {
 		Set<Car> userCars = carService.getCarsByCurrentUser();
 		model.addAttribute("allCars", userCars);
 		
-		return "cars";
+		return CARS_TEMPLATE;
 	}
 	
 	@GetMapping("/admin")
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	public String getAdminCars(Model model) {
+	public String getAdminCarsPage(Model model) {
 		List<Car> userCars = carService.getAllCars();
 		model.addAttribute("allCars", userCars);
 		
-		return "cars";
+		return CARS_TEMPLATE;
 	}
 	
 	@GetMapping("/add-new")
-	public String addNewCar(Model model) {
+	public String getNewCarPage(Model model) {
 		model.addAttribute("carDto", new CarCreationDto());
 		
 		return CAR_EDITOR_TEMPLATE;
 	}
 	
 	@GetMapping(params = {"carId"})
-	public String editCar(@RequestParam("carId") int carId, Model model) {
+	public String getEditCarPage(@RequestParam("carId") int carId, Model model) {
 		model.addAttribute("carDto", carService.getCarById(carId));
 		
 		return CAR_EDITOR_TEMPLATE;

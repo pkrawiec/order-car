@@ -1,0 +1,2 @@
+ALTER TABLE `car`
+	ADD COLUMN `active` BIT(1) DEFAULT 1;

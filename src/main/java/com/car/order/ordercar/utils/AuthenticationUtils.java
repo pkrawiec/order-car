@@ -7,16 +7,24 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import com.car.order.ordercar.model.RoleName;
-import com.car.order.ordercar.model.User;
+import com.car.order.ordercar.model.ActivatedUser;
 
 public class AuthenticationUtils {
 	private AuthenticationUtils() {}
 	
-	public static boolean hasRole(User user, RoleName roleName) {
+	public static boolean isAuthenticated() {
+		SecurityContext context = SecurityContextHolder.getContext();
+		
+		return context != null && context.getAuthentication() != null
+				&& context.getAuthentication().isAuthenticated();
+	}
+	
+	public static boolean hasRole(ActivatedUser user, RoleName roleName) {
 		return user != null && user.getRole().getName().equals(roleName.name());
 	}
 	

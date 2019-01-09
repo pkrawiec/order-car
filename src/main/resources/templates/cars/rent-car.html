@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<head th:replace="fragments/main-fragment :: page-head">
+    <title id="pageTitle" th:text="|Wypożycz ${carDto.name}|">Wypożycz auto</title>
+</head>
+
+<body>
+
+    <div th:replace="fragments/navbar :: navbar"></div>
+
+    <div class="container mt-4">
+        <div class="row" sec:authorize="isAuthenticated()">
+            <div class="col-12">
+                <h1 th:text="|Wypożycz samochód ${carDto.name}|">Wypożycz samochód</h1>
+                <h5 th:text="|Cena za dzien wypożyczenia ${carDto.pricePerDay}|">Cena za dzien wypożyczenia</h5>
+            </div>
+
+            <div class="col-12 col-md-6">
+                <form th:action="@{|/car-loan/${carDto.id}/rent|}" method="post" th:object="${carLoanDto}">
+
+                    <div class="form-group">
+                        <label for="dateFrom">Wypożyczenie od *</label>
+                        <input type="datetime-local" id="dateFrom" name="dateFrom" class="form-control" placeholder="wypożyczenie od"
+                            th:field="*{dateFrom}" required th:classappend="${#fields.hasErrors('dateFrom')}? 'is-invalid': ''" />
+                        <div class="invalid-feedback" th:each="error : ${#fields.errors('dateFrom')}" th:text="${error}">
+                            Error message
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="dateTo">Wypożyczenie do *</label>
+                        <input type="datetime-local" id="dateTo" name="dateTo" class="form-control" placeholder="wypożyczenie do"
+                            th:field="*{dateTo}" required th:classappend="${#fields.hasErrors('dateTo')}? 'is-invalid': ''" />
+                        <div class="invalid-feedback" th:each="error : ${#fields.errors('dateTo')}" th:text="${error}">
+                            Error message
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-sm-offset-3 col-sm-6">
+                                <button type="submit" class="form-control btn btn-info">Zapisz</button>
+                            </div>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <th:block th:replace="fragments/main-fragment :: main-scripts"></th:block>
+</body>
+
+</html>

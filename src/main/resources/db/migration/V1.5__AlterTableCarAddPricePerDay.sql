@@ -1,0 +1,2 @@
+ALTER TABLE `car`
+	ADD COLUMN `price_per_day` DECIMAL(5) NOT NULL;

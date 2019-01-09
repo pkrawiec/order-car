@@ -1,5 +1,7 @@
 package com.car.order.ordercar.model;
 
+import java.math.BigDecimal;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -8,10 +10,13 @@ import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.annotations.Where;
+
 import lombok.Data;
 
 @Entity
 @Data
+@Where(clause = "active = true")
 public class Car {
 
 	@Id
@@ -30,6 +35,11 @@ public class Car {
 	private String manufacturer;
 	
 	@NotNull
+	private BigDecimal pricePerDay;
+	
+	private boolean active;
+	
+	@NotNull
 	@ManyToOne(optional = false)
-	private User owner;
+	private ActivatedUser owner;
 }

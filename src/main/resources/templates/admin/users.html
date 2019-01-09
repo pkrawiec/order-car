@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<head th:replace="fragments/main-fragment :: page-head">
+    <title id="pageTitle">Użytkownicy</title>
+</head>
+
+<body>
+
+    <div th:replace="fragments/navbar :: navbar"></div>
+
+    <div class="container mt-4" sec:authorize="hasRole('ROLE_ADMIN')">
+        <div class="row">
+            <div class="col-10 col-md-6 col-md-offset-2">
+                <h1>Użytkownicy</h1>
+            </div>
+
+            <div th:if="${param.userdeleted}" class="col-12 m-0">
+                <div class="alert alert-info">
+                    <p>Usunięto użytkownika</p>
+                </div>
+            </div>
+
+            <table class="table table-hover">
+                <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Imie</th>
+                        <th scope="col">Nazwisko</th>
+                        <th scope="col">Username</th>
+                        <th scope="col">Akcje</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="user: ${usersPage.content}" th:object="${user}">
+                        <th scope="row" th:text="*{id}">ID</th>
+                        <td th:text="*{firstName}">Imie</td>
+                        <td th:text="*{lastName}">Nazwisko</td>
+                        <td th:text="*{username}">Username</td>
+                        <td>
+                            <a class="btn btn-warning" th:href="@{|/users/*{id}/admin|}">Edytuj</a>
+                            <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteUserModal"
+                                th:userid="${user.id}" th:if="*{role.name != 'ROLE_ADMIN'}">Usuń</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <nav aria-label="users-pagination" th:if="${usersPage.totalPages > 0}" class="d-flex flex-row-reverse">
+                <ul class="pagination justify-content-end">
+                    <li class="page-item" th:each="pageNumber : ${pageNumbers}" th:classappend="${pageNumber==usersPage.number ? 'active':''}">
+
+                        <a class="page-link" th:href="@{/users/admin(size=${usersPage.size}, page=${pageNumber})}"
+                            th:tabindex="${pageNumber}" th:text="${pageNumber + 1}">Page number</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+
+    <div class="modal fade" id="deleteUserModal" tabindex="-1" role="dialog" aria-labelledby="deleteUserModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteUserModalLabel">Potwierdzenie usunięcia użytkownika</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Anuluj</button>
+                    <a class="btn btn-primary" id="removeButton">Usuń</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <th:block th:replace="fragments/main-fragment :: main-scripts"></th:block>
+    <script th:inline="javascript">
+        $('#deleteUserModal').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget);
+            var userId = button.attr('userid');
+
+            var modal = $(this)
+            modal.find('.modal-title').text('Potwierdzenie usunięcia użytkownika');
+            modal.find('#removeButton').attr('href', '/users/' + userId + '/admin/remove');
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<head th:replace="fragments/main-fragment :: page-head">
+    <title id="pageTitle">Samochody</title>
+</head>
+
+<body>
+
+    <div th:replace="fragments/navbar :: navbar"></div>
+
+    <div class="container mt-4" sec:authorize="isAuthenticated()">
+        <div class="row">
+            <div class="col-10 col-md-6 col-md-offset-2" sec:authorize="hasRole('ROLE_USER')">
+                <h1>Dodane przez Ciebie samochody</h1>
+            </div>
+            <div class="col-10 col-md-6 col-md-offset-2" sec:authorize="hasRole('ROLE_ADMIN')">
+                <h1>Dodane samochody</h1>
+            </div>
+            <div class="col-2 col-md-6">
+                <a class="btn btn-primary float-right" th:href="@{/cars/add-new}" role="button">Dodaj samochód</a>
+            </div>
+
+            <div class="col-12" th:if="${param.sukces}">
+                <div class="alert alert-info">
+                    <p>Zapisano!</p>
+                </div>
+            </div>
+
+            <div class="col-md-4" th:each="car: ${allCars}" th:object="${car}">
+                <th:block th:replace="fragments/car-fragments.html :: car-card(car = ${car})"></th:block>
+            </div>
+        </div>
+    </div>
+
+    <th:block th:replace="fragments/main-fragment :: main-scripts"></th:block>
+</body>
+
+</html>

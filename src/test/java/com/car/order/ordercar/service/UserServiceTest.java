@@ -14,18 +14,18 @@ import com.car.order.ordercar.dto.UserRegistrationDto;
 import com.car.order.ordercar.exception.UserException;
 import com.car.order.ordercar.model.Role;
 import com.car.order.ordercar.model.RoleName;
-import com.car.order.ordercar.model.User;
+import com.car.order.ordercar.model.ActivatedUser;
 import com.car.order.ordercar.repository.RoleRepository;
-import com.car.order.ordercar.repository.UserRepository;
+import com.car.order.ordercar.repository.ActivatedUserRepository;
 
 public class UserServiceTest {
 
     static UserService userService;
-    static UserRepository userRepository;
+    static ActivatedUserRepository userRepository;
     static BCryptPasswordEncoder bCryptPasswordEncoder;
     static RoleRepository roleRepository;
     
-    static User testUser;
+    static ActivatedUser testUser;
     static UserRegistrationDto registrationDto;
     
     final String TEST_PASSWORD = "test_password";
@@ -34,17 +34,17 @@ public class UserServiceTest {
     // metoda odpalana przed wszystkimi testami 1x - inicjalizacja
     @BeforeAll
     public static void setUp() {
-        userRepository = Mockito.mock(UserRepository.class);
+        userRepository = Mockito.mock(ActivatedUserRepository.class);
         bCryptPasswordEncoder = Mockito.mock(BCryptPasswordEncoder.class);
         roleRepository = Mockito.mock(RoleRepository.class);
         
-        userService = new UserService(userRepository, roleRepository, bCryptPasswordEncoder);
+        userService = new UserService(userRepository, roleRepository, bCryptPasswordEncoder, null);
     }
 
     // metoda odpalana przed kazdym testem testem
     @BeforeEach
     public void setUpEach() {
-    	testUser = new User();
+    	testUser = new ActivatedUser();
     	testUser.setPassword(BCrypt.hashpw(TEST_PASSWORD, BCrypt.gensalt()));
     	testUser.setUsername(TEST_USERNAME);
     	
@@ -59,9 +59,9 @@ public class UserServiceTest {
 
     @Test
     public void successfulRegisterUser() throws UserException {
-        Mockito.when(userRepository.save(Mockito.any(User.class))).thenReturn(testUser);
+        Mockito.when(userRepository.save(Mockito.any(ActivatedUser.class))).thenReturn(testUser);
 
-        User resultUser = userService.registerUser(registrationDto);
+        ActivatedUser resultUser = userService.registerUser(registrationDto);
 
         Assertions.assertTrue(BCrypt.checkpw(registrationDto.getPassword(), resultUser.getPassword()));
         Assertions.assertEquals(resultUser.getUsername(), registrationDto.getUsername());

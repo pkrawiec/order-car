@@ -10,9 +10,9 @@ import org.mockito.Mockito;
 import com.car.order.ordercar.dto.CarCreationDto;
 import com.car.order.ordercar.model.Car;
 import com.car.order.ordercar.model.RoleName;
-import com.car.order.ordercar.model.User;
+import com.car.order.ordercar.model.ActivatedUser;
 import com.car.order.ordercar.repository.CarRepository;
-import com.car.order.ordercar.repository.UserRepository;
+import com.car.order.ordercar.repository.ActivatedUserRepository;
 import com.car.order.ordercar.utils.AuthenticationUtils;
 
 public class CarServiceTest {
@@ -26,9 +26,9 @@ public class CarServiceTest {
     
 	@BeforeAll
     public static void setUp() {
-		UserRepository userRepo = Mockito.mock(UserRepository.class);
+		ActivatedUserRepository userRepo = Mockito.mock(ActivatedUserRepository.class);
 		
-        userService = new UserService(userRepo, null, null);
+        userService = new UserService(userRepo, null, null, null);
         carRepository = Mockito.mock(CarRepository.class);
         carService = new CarService(carRepository, userService);
     }
@@ -63,8 +63,8 @@ public class CarServiceTest {
 	@Test
 	public void testSaveCar() throws Exception {
 		AuthenticationUtils.setAuthentication(RoleName.ROLE_USER.name(), "test_user");
-		UserRepository userRepo = Mockito.mock(UserRepository.class);
-    	Mockito.when(userRepo.findByUsername(Mockito.anyString())).thenReturn(new User());
+		ActivatedUserRepository userRepo = Mockito.mock(ActivatedUserRepository.class);
+    	Mockito.when(userRepo.findByUsername(Mockito.anyString())).thenReturn(new ActivatedUser());
     	
     	Mockito.when(carRepository.save(Mockito.any(Car.class))).thenReturn(testCar);
 		Car editCar = carService.saveCar(creationDto);

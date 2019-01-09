@@ -21,8 +21,10 @@ public class WebConfig extends WebSecurityConfigurerAdapter {
 	private static final String[] PUBLIC_PATHS = {
 		"/",
 		"/register",
-		"**/static",
-		"/webjars/**"
+		"/webjars/**",
+		"/img/**",
+		"/css/**",
+		"/js/**"
 	};
 
     @Override

@@ -1,5 +1,7 @@
 package com.car.order.ordercar.dto;
 
+import java.math.BigDecimal;
+
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
@@ -20,4 +22,7 @@ public class CarCreationDto {
 	
 	@NotBlank
 	private String manufacturer;
+	
+	@NotNull
+	private BigDecimal pricePerDay;
 }

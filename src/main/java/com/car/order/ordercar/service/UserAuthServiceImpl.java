@@ -10,21 +10,21 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import com.car.order.ordercar.model.User;
-import com.car.order.ordercar.repository.UserRepository;
+import com.car.order.ordercar.model.ActivatedUser;
+import com.car.order.ordercar.repository.ActivatedUserRepository;
 
 @Service
 public class UserAuthServiceImpl implements UserAuthService {
 	
-	private UserRepository userRepository;
+	private ActivatedUserRepository userRepository;
 	
 	@Autowired
-	public UserAuthServiceImpl(UserRepository userRepository) {
+	public UserAuthServiceImpl(ActivatedUserRepository userRepository) {
 		this.userRepository = userRepository;
 	}
 
 	public UserDetails loadUserByUsername(String username) {
-		User user = findByUsername(username);
+		ActivatedUser user = findByUsername(username);
 		if (user == null) {
 			throw new UsernameNotFoundException("Niepoprawna nazwa uzytkownika lub haslo");
 		}
@@ -37,7 +37,7 @@ public class UserAuthServiceImpl implements UserAuthService {
 	}
 	
 	@Override
-	public User findByUsername(String username) {
+	public ActivatedUser findByUsername(String username) {
 		return userRepository.findByUsername(username);
 	}
 	

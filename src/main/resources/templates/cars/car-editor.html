@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<head th:replace="fragments/main-fragment :: page-head">
+    <title id="pageTitle" th:if="${param.carId == null}">Dodaj samochód</title>
+    <title id="pageTitle" th:if="${param.carId != null}">Edytuj samochód</title>
+</head>
+
+<body>
+
+    <div th:replace="fragments/navbar :: navbar"></div>
+
+    <div class="container mt-4">
+        <div class="row" sec:authorize="isAuthenticated()">
+            <div class="col-md-6 col-md-offset-3">
+                <h1 th:if="${param.carId == null}">Dodaj samochód</h1>
+                <h1 th:if="${param.carId != null}">Edytuj samochód</h1>
+
+                <form th:action="@{/cars/save}" method="post" th:object="${carDto}">
+                    <input th:if="${param.carId != null}" type="hidden" name="id" id="id" th:value="*{id}"/>
+
+                    <div class="form-group">
+                        <label for="name">Nazwa samochodu</label>
+                        <input type="text" id="name" name="name" class="form-control" placeholder="nazwa samochodu"
+                            th:field="*{name}" />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="username">Rok produkcji *</label>
+                        <input type="text" id="productionYear" name="productionYear" class="form-control" placeholder="rok produkcji"
+                            th:field="*{productionYear}" required th:classappend="${#fields.hasErrors('productionYear')}? 'is-invalid': ''" />
+                        <div class="invalid-feedback" th:each="error : ${#fields.errors('productionYear')}" th:text="${error}">
+                            Error message
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="username">Model samochodu *</label>
+                        <input type="text" id="model" name="model" class="form-control" placeholder="Model samochodu"
+                            th:field="*{model}" required th:classappend="${#fields.hasErrors('model')}? 'is-invalid': ''" />
+                        <div class="invalid-feedback" th:each="error : ${#fields.errors('model')}" th:text="${error}">
+                            Error message
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="username">Producent samochodu *</label>
+                        <input type="text" id="manufacturer" name="manufacturer" class="form-control" placeholder="producent"
+                            th:field="*{manufacturer}" required th:classappend="${#fields.hasErrors('manufacturer')}? 'is-invalid': ''" />
+                        <div class="invalid-feedback" th:each="error : ${#fields.errors('manufacturer')}" th:text="${error}">
+                            Error message
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="username">Cena za dzień wypożyczenia (zł) *</label>
+                        <input type="number" id="pricePerDay" name="pricePerDay" class="form-control" placeholder="cena za dzien"
+                            th:field="*{pricePerDay}" required th:classappend="${#fields.hasErrors('pricePerDay')}? 'is-invalid': ''" />
+                        <div class="invalid-feedback" th:each="error : ${#fields.errors('pricePerDay')}" th:text="${error}">
+                            Error message
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-sm-6 col-sm-offset-3">
+                                <button type="submit" class="form-control btn btn-info">Zapisz</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <th:block th:replace="fragments/main-fragment :: main-scripts"></th:block>
+</body>
+
+</html>

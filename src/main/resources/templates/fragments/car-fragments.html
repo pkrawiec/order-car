@@ -1,11 +1,15 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 
-<div class="card" th:fragment="car-card (car)">
+<div class="card mt-4" th:fragment="car-card (car)">
     <div class="card-body">
         <h3 class="card-title" th:text="${car.name}">Car name</h3>
         <h6 class="card-subtitle mb-2 text-muted" th:text="${car.manufacturer}">Car manufacturer</h6>
         <p class="card-text" th:text="|Model ${car.model}, rok produkcji ${car.productionYear}|">Car description</p>
-        <a th:href="@{'/cars?carId=' + ${car.id}}" class="btn btn-primary">Edytuj</a>
+        <a th:href="@{'/cars?carId=' + ${car.id}}" class="btn btn-primary d-inline-block float-left">Edytuj</a>
+        <div class="d-inline-block float-right">
+            <div class="d-inline" th:text="|Cena: ${car.pricePerDay} zł|">Cena: x/dzien</div>
+            <div class="d-inline"><small>za dzień</small></div>
+        </div>
     </div>
 </div>
 

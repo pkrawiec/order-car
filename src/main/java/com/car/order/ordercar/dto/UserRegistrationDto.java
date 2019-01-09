@@ -3,12 +3,12 @@ package com.car.order.ordercar.dto;
 import javax.validation.constraints.NotBlank;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 @Data
-public class UserRegistrationDto {
+@EqualsAndHashCode(callSuper = true)
+public class UserRegistrationDto extends UserEditDto {
 	
-	@NotBlank 
-	private String username;
 	@NotBlank 
 	private String password;
 }

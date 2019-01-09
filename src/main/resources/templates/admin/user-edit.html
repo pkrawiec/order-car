@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 
 <head th:replace="fragments/main-fragment :: page-head">
-    <title id="pageTitle">Rejestracja</title>
+    <title id="pageTitle">Edycja użytkownika</title>
 </head>
 
 <body>
@@ -10,19 +10,19 @@
     <div th:replace="fragments/navbar :: navbar"></div>
 
     <div class="container mt-4">
-        <div class="row" sec:authorize="!isAuthenticated()">
+        <div class="row" sec:authorize="hasRole('ROLE_ADMIN')">
             <div class="col-md-6 col-md-offset-3">
-                <h1>Rejestracja</h1>
-                <form th:action="@{/register}" method="post" th:object="${userRegistrationDto}">
+                <h1 th:text="|Edycja konta użytkownika ${userDto.username}|"></h1>
+                <form th:action="@{|/users/${userDto.id}/admin/edit|}" method="post" th:object="${userDto}">
 
                     <div th:if="${param.errors}">
                         <div class="alert alert-danger">
-                            <p>Nastąpił błąd podczas rejestracji</p>
+                            <p>Nastąpił błąd podczas edycji</p>
                         </div>
                     </div>
                     <div th:if="${param.sukces}">
                         <div class="alert alert-info">
-                            <p>Rejestracja przebiegła pomyślnie!</p>
+                            <p>Pomyślnie edytowano!</p>
                         </div>
                     </div>
 
@@ -44,19 +44,13 @@
                     <div class="form-group">
                         <label for="lastName">Nazwisko:</label>
                         <input type="text" id="lastName" name="lastName" class="form-control" placeholder="nazwisko"
-                            th:field="*{lastName}" />
-                    </div>
-
-                    <div class="form-group">
-                        <label for="password">Hasło:</label>
-                        <input type="password" id="password" name="password" class="form-control" placeholder="haslo"
-                            th:field="*{password}" required />
+                            th:field="*{lastName}" required />
                     </div>
 
                     <div class="form-group">
                         <div class="row">
                             <div class="col-sm-6 col-sm-offset-3">
-                                <button type="submit" class="form-control btn btn-info">Zarejestruj się</button>
+                                <button type="submit" class="form-control btn btn-info">Zapisz</button>
                             </div>
                         </div>
                     </div>

@@ -41,6 +41,8 @@ public class CarService {
 		car.setName(carCreationDto.getName());
 		car.setProductionYear(carCreationDto.getProductionYear());
 		car.setOwner(userService.getUserFromSession());
+		car.setPricePerDay(carCreationDto.getPricePerDay());
+		car.setActive(true);
 		
 		return carRepository.save(car);
 	}
@@ -51,7 +53,12 @@ public class CarService {
 		car.setModel(carCreationDto.getModel());
 		car.setName(carCreationDto.getName());
 		car.setProductionYear(carCreationDto.getProductionYear());
+		car.setPricePerDay(carCreationDto.getPricePerDay());
 		
 		return carRepository.save(car);
+	}
+	
+	public List<Car> getCarsForRent() {
+		return carRepository.findAllCarsForRent();
 	}
 }

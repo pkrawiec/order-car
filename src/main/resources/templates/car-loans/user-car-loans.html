@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<head th:replace="fragments/main-fragment :: page-head">
+    <title id="pageTitle">Historia wypożyczeń</title>
+</head>
+
+<body>
+
+    <div th:replace="fragments/navbar :: navbar"></div>
+
+    <div class="container mt-4" sec:authorize="isAuthenticated()">
+        <div class="row">
+            <div class="col-10 col-md-6 col-md-offset-2">
+                <h1>Historia Twoich wypożyczeń</h1>
+            </div>
+
+            <table class="table table-hover mt-3">
+                <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Data wypożyczenia od</th>
+                        <th scope="col">Data wypożyczenia do</th>
+                        <th scope="col">Samochód</th>
+                        <th scope="col">Cena za dzień wypożyczenia</th>
+                        <th scope="col">Cena całkowita</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="carLoan: ${userCarLoans}" th:object="${carLoan}">
+                        <th scope="row" th:text="*{carLoanId}">ID</th>
+                        <td th:text="*{dateFrom}">Data od</td>
+                        <td th:text="*{dateTo}">Data do</td>
+                        <td th:text="|Model: *{car?.model}, producent: *{car?.manufacturer}|">Car details</td>
+                        <td th:text="|*{pricePerDay} zł|">1234 $</td>
+                        <td th:text="|*{priceSummary} zł|">1234 $</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <th:block th:replace="fragments/main-fragment :: main-scripts"></th:block>
+</body>
+
+</html>

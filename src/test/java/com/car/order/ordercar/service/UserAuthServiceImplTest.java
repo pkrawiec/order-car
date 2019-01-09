@@ -12,22 +12,22 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import com.car.order.ordercar.model.Role;
 import com.car.order.ordercar.model.RoleName;
-import com.car.order.ordercar.model.User;
-import com.car.order.ordercar.repository.UserRepository;
+import com.car.order.ordercar.model.ActivatedUser;
+import com.car.order.ordercar.repository.ActivatedUserRepository;
 
 public class UserAuthServiceImplTest {
 
-	static User testUser;
+	static ActivatedUser testUser;
 
 	static final String TEST_PASSWORD = "test_password";
 	static final String TEST_USERNAME = "test_username";
     
 	static UserAuthServiceImpl userAuthService;
-	static UserRepository userRepository;
+	static ActivatedUserRepository userRepository;
 	
 	@BeforeAll
 	public static void setUp() throws Exception {
-		testUser = new User();
+		testUser = new ActivatedUser();
 		testUser.setPassword(TEST_PASSWORD);
 		testUser.setUsername(TEST_USERNAME);
     	
@@ -35,7 +35,7 @@ public class UserAuthServiceImplTest {
     	userRole.setName(RoleName.ROLE_USER.name());
         testUser.setRole(userRole);
 
-        userRepository = Mockito.mock(UserRepository.class);
+        userRepository = Mockito.mock(ActivatedUserRepository.class);
         userAuthService = new UserAuthServiceImpl(userRepository);
 	}
 
@@ -44,7 +44,7 @@ public class UserAuthServiceImplTest {
 		when(userRepository.findByUsername(Mockito.anyString())).thenReturn(testUser);
 		String username = TEST_USERNAME;
 		
-		User resultUser = userAuthService.findByUsername(username);
+		ActivatedUser resultUser = userAuthService.findByUsername(username);
 		
 		assertEquals("test_username", resultUser.getUsername());
 		assertEquals(RoleName.ROLE_USER.name(), resultUser.getRole().getName());

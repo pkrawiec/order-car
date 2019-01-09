@@ -12,7 +12,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import com.car.order.ordercar.dto.UserRegistrationDto;
 import com.car.order.ordercar.exception.UserException;
+import com.car.order.ordercar.service.CarService;
 import com.car.order.ordercar.service.UserService;
+import com.car.order.ordercar.utils.AuthenticationUtils;
 
 @Controller
 public class MainController {
@@ -20,8 +22,20 @@ public class MainController {
 	@Autowired
 	private UserService userService;
 	
+	@Autowired
+	private CarService carService;
+	
     @GetMapping("/")
-    public String index() {
+    public String index(Model model) {
+    	if (AuthenticationUtils.isAuthenticated()) {
+    		model.addAttribute("allCarsForRent", carService.getCarsForRent());
+    	}
+    	
+        return "index";
+    }
+    
+    @GetMapping("/zaloguj")
+    public String login() {
         return "index";
     }
 
@@ -34,7 +48,12 @@ public class MainController {
     
     @GetMapping("/admin/panel")
     public String getAdminPanel(Model model) {
-        return "admin-panel";
+        return "admin/admin-panel";
+    }
+    
+    @GetMapping("/error")
+    public String getErrorPage() {
+    	return "error";
     }
     
     @PostMapping("/register")
