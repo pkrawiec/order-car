@@ -1,10 +1,14 @@
 package com.car.order.ordercar.model;
 
+import java.util.Set;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
@@ -16,7 +20,8 @@ import lombok.Setter;
 @Entity
 @Getter // generuje gettery
 @Setter // generuje settery
-@Table(uniqueConstraints = { @UniqueConstraint(columnNames = { "username" }) }) // pole username musi byc unikalne w bazie
+@Table(uniqueConstraints = { @UniqueConstraint(columnNames = { "username" }) }) // pole username musi byc unikalne w
+																				// bazie
 public class User {
 
 	@Id
@@ -32,4 +37,7 @@ public class User {
 
 	@OneToOne
 	private Role role;
+
+	@OneToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE}, mappedBy = "owner")
+	private Set<Car> cars;
 }

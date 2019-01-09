@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<head th:replace="fragments/main-fragment :: page-head">
+    <title id="pageTitle">Panel administracyjny</title>
+</head>
+
+<body>
+
+    <div th:replace="fragments/navbar :: navbar"></div>
+
+    <div class="container" sec:authorize="hasRole('ROLE_ADMIN')">
+        <div class="row">
+            <div class="col-12">
+
+                <a th:href="@{/cars/admin}">
+                    <div class="card">
+                        <div class="card-body">
+                            <h3 class="card-title">Wszystkie samochody</h3>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <th:block th:replace="fragments/main-fragment :: main-scripts"></th:block>
+</body>
+
+</html>

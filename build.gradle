@@ -33,6 +33,7 @@ dependencies {
 	implementation('org.springframework.boot:spring-boot-starter-security')
 	implementation('org.thymeleaf.extras:thymeleaf-extras-springsecurity5')
 	compile group: 'nz.net.ultraq.thymeleaf', name: 'thymeleaf-layout-dialect', version: '2.3.0'
+	compile('org.springframework.security:spring-security-data')
 	
 	implementation('org.flywaydb:flyway-core')
 	runtimeOnly('mysql:mysql-connector-java')

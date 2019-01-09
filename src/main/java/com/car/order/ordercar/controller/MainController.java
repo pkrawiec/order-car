@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import com.car.order.ordercar.dto.UserRegistrationDto;
+import com.car.order.ordercar.exception.UserException;
 import com.car.order.ordercar.service.UserService;
 
 @Controller
@@ -31,9 +32,14 @@ public class MainController {
         return "register";
     }
     
+    @GetMapping("/admin/panel")
+    public String getAdminPanel(Model model) {
+        return "admin-panel";
+    }
+    
     @PostMapping("/register")
     public String postRegisterForm(@ModelAttribute("userRegistrationDto") @Valid UserRegistrationDto userRegistrationDto,
-    		BindingResult result) throws Exception {
+    		BindingResult result) throws UserException {
     	
     	if (userService.userExist(userRegistrationDto)) {
     		result.rejectValue("username", null, "Istnieje juz konto o podanej nazwie");
