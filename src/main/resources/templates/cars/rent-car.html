@@ -19,6 +19,13 @@
             <div class="col-12 col-md-6">
                 <form th:action="@{|/car-loan/${carDto.id}/rent|}" method="post" th:object="${carLoanDto}">
 
+                    <div th:if="${param.datesError}">
+                        <div class="alert alert-danger">
+                            <p>Data "Wypożyczenie do" musi być większa niż "
+                                Wypożyczenie od"</p>
+                        </div>
+                    </div>
+
                     <div class="form-group">
                         <label for="dateFrom">Wypożyczenie od *</label>
                         <input type="datetime-local" id="dateFrom" name="dateFrom" class="form-control" placeholder="wypożyczenie od"
