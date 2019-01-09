@@ -1,0 +1,15 @@
+version: '3'
+
+services:
+
+  jenkins-master:
+    build:
+      context: ./
+    ports:
+      - "18080:8080"
+    container_name: jenkins-master
+    user: root
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - $HOME/jenkins:/var/jenkins_home
+      - $HOME/git:/home/git
