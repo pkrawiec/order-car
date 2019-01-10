@@ -88,14 +88,14 @@ public class CarLoanService {
 				.build();
 	}
 	
-	private BigDecimal getCarLoanSummaryPrice(CarLoan carLoan) {
+	public BigDecimal getCarLoanSummaryPrice(CarLoan carLoan) {
 		int carLoanDays = getCarLoanDays(carLoan);
 		BigDecimal pricePerDayForCar = carLoan.getPricePerDay();
 		
 		return pricePerDayForCar.multiply(new BigDecimal(carLoanDays));
 	}
 	
-	private int getCarLoanDays(CarLoan carLoan) {
+	public int getCarLoanDays(CarLoan carLoan) {
 		Date dateFrom = carLoan.getDateFrom();
 		Date dateTo = carLoan.getDateTo();
 		long diff = dateTo.getTime() - dateFrom.getTime();

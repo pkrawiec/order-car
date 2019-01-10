@@ -42,9 +42,9 @@
                     <a class="nav-link" th:href="@{/logout}">Wyloguj</a>
                 </li>
             </ul>
-            <div class="my-2 my-lg-0" sec:authorize="hasRole('ROLE_ADMIN')">
+            <form class="my-2 my-lg-0">
                 <a class="nav-link" th:href="@{/admin/panel}">Panel administratora</a>
-            </div>
+            </form>
         </div>
     </nav>
 
